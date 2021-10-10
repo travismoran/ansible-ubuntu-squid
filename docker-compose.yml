@@ -1,0 +1,10 @@
+version: '2'
+services:
+  squid:
+    image: datadog/squid
+    volumes:
+    - /root/squid/squid.conf:/etc/squid/squid.conf
+    - /root/squid/passwords:/etc/squid/passwords
+    - /var/log/squid:/var/log/squid
+    ports:
+    - 3128:3128/tcp

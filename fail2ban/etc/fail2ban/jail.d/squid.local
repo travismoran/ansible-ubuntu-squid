@@ -1,0 +1,6 @@
+[squid]
+banaction = iptables-multiport-forward
+enabled = true
+port     =  80,443,3128,8080
+logpath = /var/log/squid/access.log
+

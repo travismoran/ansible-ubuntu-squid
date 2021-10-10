@@ -1,0 +1,31 @@
+---
+  - name: Playbook
+    hosts: localhost
+    become: yes
+    become_user: root
+    tasks:
+      - name: fail2ban
+        apt:
+          name: fail2ban
+
+      - name: Enable service fail2ban
+        ansible.builtin.systemd:
+          name: httpd
+          enabled: yes
+    
+      - name: Add fail2ban enhanced sshd config
+        ansible.builtin.copy:
+          src: fail2ban/etc/fail2ban/jail.d/sshd.conf
+          dest: /etc/fail2ban/jail.d/sshd.conf
+
+      # apply new config
+      - name: Restart fail2ban
+        service:
+          name: fail2ban
+          state: restarted
+
+      # is running with new config
+      - name: ensure fail2ban is running
+        service:
+          name: fail2ban
+          state: started

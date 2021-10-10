@@ -1,0 +1,8 @@
+[sshd]
+enabled=true
+mode = aggressive
+publickey = any
+port    = ssh
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s
+

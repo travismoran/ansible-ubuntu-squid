@@ -1,0 +1,64 @@
+---
+  - name: Playbook
+    hosts: localhost
+    become: yes
+    become_user: root
+    tasks:
+      - name: fail2ban
+        apt:
+          name: fail2ban
+
+      - name: Add fail2ban sshd config
+        ansible.builtin.copy:
+          src: fail2ban/etc/fail2ban/jail.d/
+          dest: /etc/fail2ban/jail.d
+
+      - name: Add fail2ban docker forward action.d configs
+        ansible.builtin.copy:
+          src: fail2ban/etc/fail2ban/action.d/
+          dest: /etc/fail2ban/action.d
+
+      - name: Add squid filter with updated regex
+        ansible.builtin.copy:
+          src: fail2ban/etc/fail2ban/filter.d/squid.conf
+          dest: /etc/fail2ban/filter.d/squid.conf
+          backup: yes
+
+      # squid config - expects datadog/squid docker image with mounts to /etc/squid/<file>
+      - name: ensure required path for Docker Squid volume mount exists
+        command: mkdir -p /var/log/squid/
+        args:
+          creates: /var/log/squid/
+
+      - name: ensure required path for Docker Squid volume mount exists
+        command: mkdir -p /etc/squid/
+        args:
+          creates: /etc/squid/
+
+      - name: Add squid proxy config and creds
+        ansible.builtin.copy:
+          src: squid/etc/squid/
+          dest: /etc/squid/
+
+      # in case datadog/squid has not been scheduled on host yet
+      - name: ensure required Docker Squid volume mounted log file exist for fail2ban to start
+        copy:
+          content: ""
+          dest: /var/log/squid/access.log
+          force: no
+          group: sys
+          owner: root
+          mode: 0755
+
+      # apply new config
+      - name: Restart fail2ban
+        service:
+          name: fail2ban
+          state: restarted
+
+      # is running with new config
+      - name: ensure fail2ban is running
+        service:
+          name: fail2ban
+          state: started
+
