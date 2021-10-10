@@ -76,8 +76,6 @@ kTuHD8fQ9ILSCcj6q690WXlt-m2sRjWX
 
 #### generate strong random username using bash
 ```
-squiduser=$(head -c16 /dev/urandom | md5sum)
-# or
 head -c16 /dev/urandom | md5sum
 ```
 
@@ -88,10 +86,16 @@ head -c16 /dev/urandom | md5sum
 
 #### generate password file username must be only letters and numbers
 ```
-htpasswd -c etc/squid/passwords $squiduser
-# or
-htpasswd -c etc/squid/passwords <yourstrongusername>
+# install apache2-utils
+apt install apache2-utils
+
+#generate encrypted password file
+
+htpasswd -c squid/etc/squid/passwords <yourstrongusername>
 ```
+
+
+
 
 ## Start docker-compose stack
 ```
