@@ -108,5 +108,10 @@ docker-compose up -d
 
 ![](.readme/img/ff_proxy2.jpg?raw=true)
 
-### Congratulations you have setup a squid proxy with ddos and intrusion protection!
 
+
+#### Verify your public IP matches the squid server IP
+![](.readme/img/ipchicken.jpg?raw=true)
+
+
+### Congratulations you have setup a squid proxy with ddos and intrusion protection!
