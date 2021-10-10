@@ -110,7 +110,7 @@ docker-compose up -d
 
 
 
-#### Verify your public IP matches the squid server IP
+#### Verify your public IP matches the squid server IP [ipchicken](https://ipchicken.com/)
 ![](.readme/img/ipchicken.jpg?raw=true)
 
 
